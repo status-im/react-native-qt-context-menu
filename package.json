@@ -1,0 +1,27 @@
+{
+  "name": "react-native-qt-context-menu",
+  "version": "0.0.1",
+  "description": "React Native QT context menu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/status-im/react-native-qt-context-menu.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "desktop",
+    "qt"
+  ],
+  "author": "Status.im",
+  "license": "MIT",
+  "devDependencies": {
+    "react-native": "^0.5.0"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.4.0 <1.0.0"
+  }
+}
