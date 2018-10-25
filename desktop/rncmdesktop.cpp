@@ -9,12 +9,17 @@
  */
 #include <memory>
 
-#include "bridge.h"
 #include "rncmdesktop.h"
+#include "bridge.h"
+#include "utilities.h"
 
 #include <QDebug>
 #include <QVariantMap>
-#include <QMessageBox>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlEngine>
+#include <QQuickItem>
+#include <QQuickWindow>
 
 namespace {
 struct RegisterQMLMetaType {
@@ -28,6 +33,7 @@ class RNCMPrivate {
 public:
     RNCMPrivate() {}
     Bridge* bridge = nullptr;
+    QQuickItem* alert = nullptr;
 };
 
 RNCM::RNCM(QObject* parent) : QObject(parent), d_ptr(new RNCMPrivate) {}
@@ -52,7 +58,13 @@ QVariantMap RNCM::constantsToExport() {
 }
 
 void RNCM::show(QString text) {
-    QMessageBox msgBox;
-    msgBox.setText(text);
-    msgBox.exec();
+    Q_D(RNCM);
+
+    d->alert = utilities::createQMLItemFromSourceFile(d->bridge->qmlEngine(), QUrl("qrc:/MyMessageBox.qml"));
+    if (d->alert == nullptr) {
+        qCritical() << __PRETTY_FUNCTION__ << "Unable to create Alert item";
+        return;
+    }
+    d->alert->setParentItem(d->bridge->topmostVisualParent());
+    d->alert->metaObject()->invokeMethod(d->alert, "open");
 }
